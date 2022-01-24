@@ -1,102 +1,26 @@
-export const wordList = [
-    "cause",
-    "oranges",
-    "dust",
-    "ignore",
-    "questionable",
-    "concern",
-    "dispensable",
-    "coil",
-    "scarecrow",
-    "behave",
-    "square",
-    "harsh",
-    "purring",
-    "hate",
-    "distance",
-    "fax",
-    "clam",
-    "tangible",
-    "creator",
-    "obedient",
-    "mysterious",
-    "cakes",
-    "debt",
-    "ghost",
-    "royal",
-    "distinct",
-    "quarter",
-    "plastic",
-    "earth",
-    "vulgar",
-    "chin",
-    "fear",
-    "undesirable",
-    "meaty",
-    "abstracted",
-    "depressed",
-    "overconfident",
-    "silver",
-    "swing",
-    "gratis",
-    "glove",
-    "lick",
-    "homeless",
-    "yarn",
-    "boat",
-    "place",
-    "watch",
-    "normal",
-    "puffy",
-    "cent",
-    "start",
-    "influence",
-    "simplistic",
-    "absurd",
-    "society",
-    "snails",
-    "savory",
-    "acrid",
-    "porter",
-    "guard",
-    "hypnotic",
-    "few",
-    "wind",
-    "nod",
-    "rat",
-    "throat",
-    "understood",
-    "deserve",
-    "tearful",
-    "prick",
-    "reflective",
-    "wide-eyed",
-    "stiff",
-    "program",
-    "penitent",
-    "tax",
-    "cover",
-    "key",
-    "hurt",
-    "pear",
-    "satisfy",
-    "unequaled",
-    "energetic",
-    "calculator",
-    "zonked",
-    "military",
-    "alleged",
-    "laborer",
-    "ship",
-    "station",
-    "pleasure",
-    "determined",
-    "psychedelic",
-    "charge",
-    "remind",
-    "courageous",
-    "exclusive",
-    "scatter",
-    "telephone",
-    "abrasive"
-]
+import React from 'react'
+import WordSelect from './WordSelect'
+import styled from 'styled-components'
+
+export default class WordList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            gameData: props.gameData,
+        }
+    }
+
+    render() {
+        return (
+            <ListWrapper>
+                <ul>
+                    {this.state.gameData.map((e,i) => <WordSelect keyID={i} wordData={e} handleWordSelect={(i) => this.props.handleWordSelect(i)}></WordSelect>)}
+                </ul>
+            </ListWrapper>
+        )
+    }
+}
+
+const ListWrapper = styled.div`
+    max-width:300px;
+`
