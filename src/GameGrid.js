@@ -2,8 +2,8 @@ import React from 'react'
 import LetterSegment from './LetterSegment'
 import './GameGrid.css'
 
-const gridWidth = 6;
-const gridHeight = 6;
+export const gridWidth = 6;
+export const gridHeight = 6;
 
 export default class GameGrid extends React.Component {
     constructor(props) {
@@ -56,6 +56,7 @@ export default class GameGrid extends React.Component {
                                     actualLetter={this.getLetter(i2,i)} 
                                     letterID={this.getLetterID(i2,i)} 
                                     selected={this.props.selectedWordID!==undefined ? this.checkSelected(i2,i) : ""}
+                                    letterPos={[i2, i]}
                                 >
                                 </LetterSegment>
                     })}</div>

@@ -8,6 +8,17 @@ export default class LetterSegment extends React.Component {
             actualLetter: props.actualLetter,
             letterID: props.letterID,
             hidden: true,
+            letterPos: props.letterPos,
+            letter: ""
+        }
+    }
+
+    onInputChange(value) {
+        // Ensures input is only letters - no numbers or symbols
+        if (/^([a-zA-Z]|^$)$/.test(value)) {
+            this.setState({
+                letter: value
+            })
         }
     }
 
@@ -15,7 +26,7 @@ export default class LetterSegment extends React.Component {
         return (
         <LetterButton blank={this.state.actualLetter==="."} selected={this.props.selected}>
             {this.state.letterID===0 ? "" : <IDButton>{this.state.letterID}</IDButton>}
-            {this.state.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} />}
+            {this.state.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} value={this.state.letter} onInput={event => this.onInputChange(event.target.value)} onChange={event => console.log(this.state.letterPos, event.target.value)}/>}
         </LetterButton>
         )
     }
