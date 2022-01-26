@@ -14,7 +14,11 @@ export default class WordList extends React.Component {
         return (
             <ListWrapper>
                 <ul>
-                    {this.state.gameData.map((e,i) => <WordSelect keyID={i} wordData={e} handleWordSelect={(i) => this.props.handleWordSelect(i)}></WordSelect>)}
+                    {this.state.gameData.map((e,i) => {
+                        return (
+                            <WordSelect keyID={i} wordData={e} handleWordSelect={(i) => this.props.handleWordSelect(i)}></WordSelect>
+                        )
+                    })}
                 </ul>
             </ListWrapper>
         )

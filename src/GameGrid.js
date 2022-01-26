@@ -18,6 +18,7 @@ export default class GameGrid extends React.Component {
         return this.state.gameLayout[y][x]
     }
 
+    // Method to get the letter ID for rendering the word startPos
     getLetterID(x, y) {
         for (let wordData of this.state.gameData) {
             if (wordData.startPos[0]===x && wordData.startPos[1]===y) {
@@ -27,13 +28,36 @@ export default class GameGrid extends React.Component {
         return 0;
     }
 
+    // Method to return array of all coordinates of selected word
+    getSelectedLetters() {
+        const wordData = this.state.gameData[this.props.selectedWordID]
+        let letterCoords = []
+        wordData.word.split("").forEach((e, i) => {
+            if (wordData.orientation==="HORIZONTAL") {
+                letterCoords.push([wordData.startPos[0]+i, wordData.startPos[1]])
+            } else if (wordData.orientation==="VERTICAL") {
+                letterCoords.push([wordData.startPos[0], wordData.startPos[1]+i])
+            }
+        })
+        return letterCoords
+    }
+
+    // Method to check if letter is currently part of selected word
+    checkSelected(x, y) {
+        return this.getSelectedLetters().some(coords => coords[0]===x && coords[1]===y)
+    }
+
     render() {
         return (
             <div>
-                {this.props.selectedWordID!==undefined ? <h3>{"Selected Word: " + this.state.gameData[this.props.selectedWordID].ID+" "+this.state.gameData[this.props.selectedWordID].orientation}</h3> : ""}
                 {Array(gridHeight).fill(0).map((e, i) => {
                     return <div className="board-row">{Array(gridWidth).fill(0).map((e2, i2) => {
-                        return <LetterSegment letterChar={this.getLetter(i2,i)} letterID={this.getLetterID(i2,i)}></LetterSegment>
+                        return <LetterSegment 
+                                    actualLetter={this.getLetter(i2,i)} 
+                                    letterID={this.getLetterID(i2,i)} 
+                                    selected={this.props.selectedWordID!==undefined ? this.checkSelected(i2,i) : ""}
+                                >
+                                </LetterSegment>
                     })}</div>
                 })}
             </div>

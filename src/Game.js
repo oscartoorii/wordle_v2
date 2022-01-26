@@ -3,6 +3,7 @@ import WordSegment from './WordSegment';
 import GameGrid from './GameGrid';
 import WordList from './WordList';
 import { defaultGame } from './gameLayouts'
+import WordCheck from './WordCheck';
 
 //const minWords = 5;
 //const maxWords = 10;
@@ -39,6 +40,14 @@ export default class Game extends React.Component {
       <h2>Number of words: {defaultGame.length}</h2>
       {/*this.state.words.map(e => <WordSegment word={e.word}></WordSegment>)*/}
       <GameGrid gameData={this.state.gameData} selectedWordID={this.state.selectedWordID}></GameGrid>
+      {this.state.selectedWordID!==undefined ? 
+        <div>
+          <h3>
+            {"Selected Word: " + this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation}
+          </h3>
+          <WordCheck selectedWordID={this.state.selectedWordID}></WordCheck>
+        </div>
+        : ""}
       <WordList gameData={this.state.gameData} handleWordSelect={(i) => this.handleWordSelect(i)}></WordList>
     </div>
     )

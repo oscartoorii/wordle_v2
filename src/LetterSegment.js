@@ -5,7 +5,7 @@ export default class LetterSegment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            letterChar: props.letterChar,
+            actualLetter: props.actualLetter,
             letterID: props.letterID,
             hidden: true,
         }
@@ -13,9 +13,9 @@ export default class LetterSegment extends React.Component {
 
     render() {
         return (
-        <LetterButton blank={this.state.letterChar==="."}>
+        <LetterButton blank={this.state.actualLetter==="."} selected={this.props.selected}>
             {this.state.letterID===0 ? "" : <IDButton>{this.state.letterID}</IDButton>}
-            {this.state.letterChar}
+            {this.state.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} />}
         </LetterButton>
         )
     }
@@ -23,7 +23,7 @@ export default class LetterSegment extends React.Component {
 
 const LetterButton = styled.button`
     background: ${props => props.blank ? "#000000" : "#FFFFFF"};
-    border: 1px solid #999;
+    border: 3px solid ${props => props.selected ? "#3563FF" : "#999999"};
     float: left;
     font-size: 36px;
     font-weight: bold;
@@ -45,3 +45,14 @@ const IDButton = styled.div`
     font-size: 20px;
     padding: 5px;
 `;
+
+const LetterInput = styled.input`
+    border: none;
+    font-size: 36px;
+    width: 36px;
+    text-align: center;
+    text-transform: uppercase;
+    &:focus {
+        outline: none;
+    }
+`
