@@ -21,7 +21,8 @@ export default class Game extends React.Component {
           startLetterID: null,
           disabled: true,
           selected: false,
-          squareColour: "#000000",
+          squareColour: "#333333",
+          textColour: "#000000",
         })
       })),
       selectedWordID: undefined,
@@ -39,7 +40,7 @@ export default class Game extends React.Component {
       e2.actualLetter = this.getLetter(i2,i)
       e2.startLetterID = this.getStartLetterID(i2,i)
       e2.disabled = this.getLetter(i2, i)==="."
-      e2.squareColour = this.getLetter(i2, i)!=="." ? "#FFFFFF" : "#000000"
+      e2.squareColour = this.getLetter(i2, i)!=="." ? "#FFFFFF" : "#333333"
     }))
   }
 
@@ -101,7 +102,28 @@ export default class Game extends React.Component {
 
   // Checks the currently selected word
   handleWordCheck() {
-    this.getWordCoords(this.state.selectedWordID).forEach((e, i) => console.log(this.state.gameData[this.state.selectedWordID].word[i]))
+    if (this.getWordCoords(this.state.selectedWordID).some(e => this.state.currentGridState[e[1]][e[0]].currentLetter==="")) {
+      console.log("ERROR: Incomplete Word")
+      return;
+    }
+    ////////// Add dictionary check ("Word is not in dictionary")
+    let newGridState = this.state.currentGridState.slice() // Copy array
+    this.getWordCoords(this.state.selectedWordID).forEach(e => {
+      if (this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e[1]][e[0]]) {
+        // Correct spot - Green tile
+        newGridState[e[1]][e[0]].squareColour = "#6AAA64"
+      } else if (this.getWordCoords(this.state.selectedWordID).some(e2 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e2[1]][e2[0]])) {
+        // In the word but wrong spot - Yellow tile
+        newGridState[e[1]][e[0]].squareColour = "#C9B458"
+      } else {
+        // Not in word - Gray tile
+        newGridState[e[1]][e[0]].squareColour = "#787C7E"
+      }
+      newGridState[e[1]][e[0]].textColour = "#FFFFFF"
+    })
+    this.setState({
+        currentGridState: newGridState
+    })
   }
   
   render() {

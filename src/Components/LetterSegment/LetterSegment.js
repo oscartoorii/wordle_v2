@@ -15,7 +15,14 @@ export default class LetterSegment extends React.Component {
         return (
         <LetterButton squareColour={this.state.currentLetterState.squareColour} selected={this.state.currentLetterState.selected}>
             {this.state.currentLetterState.startLetterID===0 ? "" : <IDButton>{this.state.currentLetterState.startLetterID}</IDButton>}
-            {this.state.currentLetterState.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} value={this.state.currentLetterState.currentLetter} onInput={event => this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)}/>}
+            {this.state.currentLetterState.actualLetter==="." ? "" : 
+            <LetterInput 
+                type="text" 
+                maxLength={1} 
+                value={this.state.currentLetterState.currentLetter}
+                color={this.state.currentLetterState.textColour}
+                onInput={event => this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)}
+            />}
         </LetterButton>
         )
     }
@@ -23,7 +30,7 @@ export default class LetterSegment extends React.Component {
 
 const LetterButton = styled.button`
     background: ${props => props.squareColour};
-    border: 3px solid ${props => props.selected ? "#3563FF" : "#999999"};
+    border: 3px solid ${props => props.selected ? "#477FD3" : "#999999"};
     float: left;
     font-size: 36px;
     font-weight: bold;
@@ -39,16 +46,19 @@ const LetterButton = styled.button`
 
 const IDButton = styled.div`
     position: absolute;
-    color: #A4A4A4;
+    color: #333333;
     top: -11px;
     left: -2px;
-    font-size: 20px;
+    font-size: 18px;
     padding: 5px;
 `;
 
 const LetterInput = styled.input`
+    color: ${props => props.color ? props.color : "black"};
+    background: transparent;
     border: none;
     font-size: 36px;
+    font-weight: bold;
     width: 36px;
     text-align: center;
     text-transform: uppercase;
