@@ -11,7 +11,7 @@ export default class WordCheck extends React.Component {
 
     render() {
         return (
-          <CheckButton>
+          <CheckButton onClick={() => this.props.handleWordCheck()}>
             {"CHECK"}
           </CheckButton>
         )

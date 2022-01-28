@@ -1,5 +1,5 @@
 import React from 'react'
-import WordSelect from './WordSelect'
+import WordSelect from '../WordSelect/WordSelect'
 import styled from 'styled-components'
 
 export default class WordList extends React.Component {

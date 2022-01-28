@@ -5,35 +5,24 @@ export default class LetterSegment extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            actualLetter: props.actualLetter,
-            letterID: props.letterID,
-            hidden: true,
-            letterPos: props.letterPos,
-            letter: ""
+            currentLetterState: props.currentLetterState,
         }
     }
 
-    onInputChange(value) {
-        // Ensures input is only letters - no numbers or symbols
-        if (/^([a-zA-Z]|^$)$/.test(value)) {
-            this.setState({
-                letter: value
-            })
-        }
-    }
+    
 
     render() {
         return (
-        <LetterButton blank={this.state.actualLetter==="."} selected={this.props.selected}>
-            {this.state.letterID===0 ? "" : <IDButton>{this.state.letterID}</IDButton>}
-            {this.state.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} value={this.state.letter} onInput={event => this.onInputChange(event.target.value)} onChange={event => console.log(this.state.letterPos, event.target.value)}/>}
+        <LetterButton squareColour={this.state.currentLetterState.squareColour} selected={this.state.currentLetterState.selected}>
+            {this.state.currentLetterState.startLetterID===0 ? "" : <IDButton>{this.state.currentLetterState.startLetterID}</IDButton>}
+            {this.state.currentLetterState.actualLetter==="." ? "" : <LetterInput type="text" maxLength={1} value={this.state.currentLetterState.currentLetter} onInput={event => this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)}/>}
         </LetterButton>
         )
     }
 }
 
 const LetterButton = styled.button`
-    background: ${props => props.blank ? "#000000" : "#FFFFFF"};
+    background: ${props => props.squareColour};
     border: 3px solid ${props => props.selected ? "#3563FF" : "#999999"};
     float: left;
     font-size: 36px;
