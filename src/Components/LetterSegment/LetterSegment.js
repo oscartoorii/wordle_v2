@@ -23,10 +23,16 @@ export default class LetterSegment extends React.Component {
                 onInput={event => {
                     this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)
                 }}
-                onKeyDown={event => 
-                    ((event.key==="Backspace"||event.key==="Delete") && this.state.currentLetterState.currentLetter==="") ? 
-                    this.props.moveLetterFocus("BACKWARD", event.target.value ,this.state.currentLetterState.letterPos) : ""
-                }
+                onKeyDown={event => {
+                    if ((event.key==="Backspace"||event.key==="Delete") && this.state.currentLetterState.currentLetter==="") {
+                        this.props.moveLetterFocus("BACKWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    } else if (event.key==="Enter") {
+                        this.props.handleWordCheck()
+                    } else if (this.state.currentLetterState.currentLetter!=="" && !(event.key==="Backspace"||event.key==="Delete")) {
+                        this.props.moveLetterFocus("FORWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    }
+                }}
+                onClick={() => this.props.toggleSelectedWord(this.state.currentLetterState.letterPos, this.state.currentLetterState.associatedWords)}
             />}
         </LetterButton>
         )

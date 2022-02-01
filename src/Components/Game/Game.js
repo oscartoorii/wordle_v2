@@ -1,11 +1,11 @@
 import React from 'react';
 import GameGrid from '../GameGrid/GameGrid';
 import WordList from '../WordList/WordList';
-import { game2 } from '../../gameLayouts'
+import { game1 } from '../../gameLayouts'
 import WordCheck from '../WordCheck.js/WordCheck';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 
-const selectedGameData = game2
+const selectedGameData = game1
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -23,10 +23,12 @@ export default class Game extends React.Component {
           selected: false,
           squareColour: "#333333",
           textColour: "#000000",
+          associatedWords: [],
           focusRef: null,
         })
       })),
       selectedWordID: undefined,
+      currentClickedWordPos: undefined,
     }
     this.initCurrentGridState()
   }
@@ -37,11 +39,13 @@ export default class Game extends React.Component {
 
   // Initialise current grid state based off game data
   initCurrentGridState () {
+    const associatedWords = getAssociatedWords(this.state.gameData)
     this.state.currentGridState.forEach((e, i) => e.forEach((e2, i2) => {
       e2.actualLetter = this.getLetter(i2,i)
       e2.startLetterID = this.getStartLetterID(i2,i)
       e2.disabled = this.getLetter(i2, i)==="."
       e2.squareColour = this.getLetter(i2, i)!=="." ? "#FFFFFF" : "#333333"
+      e2.associatedWords = associatedWords[i][i2]
     }))
   }
 
@@ -99,6 +103,24 @@ export default class Game extends React.Component {
     })
   }
 
+  // Toggles the currently selected word based on the words associated with a clicked letter segment
+  toggleSelectedWord(letterPos, associatedWords) {
+    // Cycle through associated words if same letter is clicked multiple times
+    if (this.state.currentClickedWordPos===letterPos) {
+      const currentWordIndex = associatedWords.indexOf(this.state.selectedWordID)
+      if (currentWordIndex===associatedWords.length-1) {
+        this.handleWordSelect(associatedWords[0])
+      } else {
+        this.handleWordSelect(associatedWords[currentWordIndex+1])
+      }
+    } else {
+      this.handleWordSelect(associatedWords[0])
+      this.setState({
+        currentClickedWordPos: letterPos,
+      })
+    }
+  }
+
   // Called every time a letter value is changed
   handleLetterChange(value, pos) {
     // Ensures input is only letters - no numbers or symbols
@@ -126,9 +148,7 @@ export default class Game extends React.Component {
       }
     } else if (dir==="BACKWARD") {
       if (currentLetterIndex !== 0) { // Only move to previous letter if not the first letter
-        console.log(value, pos)
         const nextLetterIndex = parseInt(currentLetterIndex) - 1
-        console.log(nextLetterIndex)
         this.state.currentGridState[currentWordCoords[nextLetterIndex][1]][currentWordCoords[nextLetterIndex][0]].focusRef.focus()
       }
     }
@@ -170,7 +190,9 @@ export default class Game extends React.Component {
         currentGridState={this.state.currentGridState} 
         handleRef={(value, pos) => this.handleRef(value, pos)} 
         handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}
+        handleWordCheck={i => this.handleWordCheck(i)}
         moveLetterFocus={(dir, value, pos) => this.moveLetterFocus(dir, value, pos)}
+        toggleSelectedWord={(i, i2) => this.toggleSelectedWord(i, i2)}
       >
       </GameGrid>
       {this.state.selectedWordID!==undefined ? 
@@ -191,11 +213,28 @@ export default class Game extends React.Component {
 const generateLayout = (gameData) => {
   let layout = Array(gridHeight).fill(".").map(e => Array(gridWidth).fill("."))
   gameData.map(e => e.word.split("").forEach((e2, wordPos) => {
-      if (e.orientation==="HORIZONTAL") {
-          layout[e.startPos[1]][e.startPos[0]+wordPos] = e2;
-      } else if (e.orientation==="VERTICAL") {
-          layout[e.startPos[1]+wordPos][e.startPos[0]] = e2;
+    if (e.orientation==="HORIZONTAL") {
+      layout[e.startPos[1]][e.startPos[0]+wordPos] = e2;
+    } else if (e.orientation==="VERTICAL") {
+      layout[e.startPos[1]+wordPos][e.startPos[0]] = e2;
+    }
+  }))
+  return layout;
+}
+
+// Returns all associated word IDs for all letter segments
+const getAssociatedWords = (gameData) => {
+  let layout = Array(gridHeight).fill(0).map(e => Array(gridWidth).fill(0).map(e2 => []))
+  gameData.map((e, i) => e.word.split("").forEach((e2, wordPos) => {
+    if (e.orientation==="HORIZONTAL") {
+      if (!layout[e.startPos[1]][e.startPos[0]+wordPos].includes(i)) {
+        layout[e.startPos[1]][e.startPos[0]+wordPos].push(i)
       }
+    } else if (e.orientation==="VERTICAL") {
+      if (!layout[e.startPos[1]+wordPos][e.startPos[0]].includes(i)) {
+        layout[e.startPos[1]+wordPos][e.startPos[0]].push(i)
+      }
+    }
   }))
   return layout;
 }

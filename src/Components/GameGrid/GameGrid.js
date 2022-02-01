@@ -22,7 +22,9 @@ export default class GameGrid extends React.Component {
                                     currentLetterState={this.state.currentGridState[i][i2]} 
                                     handleRef={(value, pos) => this.props.handleRef(value, pos)}
                                     handleLetterChange={(value, pos) => this.props.handleLetterChange(value, pos)}
+                                    handleWordCheck={i => this.props.handleWordCheck(i)}
                                     moveLetterFocus={(dir, value, pos) => this.props.moveLetterFocus(dir, value, pos)}
+                                    toggleSelectedWord={(i, i2) => this.props.toggleSelectedWord(i, i2)}
                                 >
                                 </LetterSegment>
                     })}</GridRow>

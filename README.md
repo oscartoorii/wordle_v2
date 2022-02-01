@@ -13,10 +13,11 @@ _(Developed purely for learning purposes)_
 - Button-based word selection
 - Wordle-style word checking
 - Restrictive letter input
+- Auto word focus
+- Smart Square-based word selection
+- Easy word checking
 
 ### Future Features
-- Auto word focus
-- Square-based word selection
 - Alert pop-ups
 - How to play section
 - Individual word guess history & limited attempts
