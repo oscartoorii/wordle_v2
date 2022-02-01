@@ -1,11 +1,11 @@
 import React from 'react';
 import GameGrid from '../GameGrid/GameGrid';
 import WordList from '../WordList/WordList';
-import { defaultGame } from '../../gameLayouts'
+import { game2 } from '../../gameLayouts'
 import WordCheck from '../WordCheck.js/WordCheck';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 
-const selectedGameData = defaultGame 
+const selectedGameData = game2
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -23,6 +23,7 @@ export default class Game extends React.Component {
           selected: false,
           squareColour: "#333333",
           textColour: "#000000",
+          focusRef: null,
         })
       })),
       selectedWordID: undefined,
@@ -77,6 +78,15 @@ export default class Game extends React.Component {
     return this.getWordCoords(this.state.selectedWordID).some(coords => coords[0]===x && coords[1]===y)
   }
 
+  // Assigns references in currentGameState for each letter cell for auto-focusing
+  handleRef(value, pos) {
+    let newGridState = this.state.currentGridState.slice() // Copy array
+    newGridState[pos[1]][pos[0]].focusRef = value;
+    this.setState({
+        currentGridState: newGridState
+    })
+  }
+
   // Changes currently selected word
   async handleWordSelect(uniqueWordID) {
     await this.setState({
@@ -89,6 +99,7 @@ export default class Game extends React.Component {
     })
   }
 
+  // Called every time a letter value is changed
   handleLetterChange(value, pos) {
     // Ensures input is only letters - no numbers or symbols
     if (/^([a-zA-Z]|^$)$/.test(value)) {
@@ -97,6 +108,29 @@ export default class Game extends React.Component {
         this.setState({
             currentGridState: newGridState
         })
+        // Move to next letter in word
+        this.moveLetterFocus("FORWARD", value, pos)
+    }
+  }
+
+  // Moves the letter forward or backward
+  moveLetterFocus(dir, value, pos) {
+    const currentWordCoords = this.getWordCoords(this.state.selectedWordID)
+    const currentLetterIndex = currentWordCoords.findIndex(e => JSON.stringify(e)===JSON.stringify(pos))
+    if (dir==="FORWARD") {
+      if (value!=="") { // Only move to next letter if letter is not backspaced nor deleted
+        if (currentLetterIndex !== currentWordCoords.length-1) { // Only move to next letter if not the last letter
+          const nextLetterIndex = parseInt(currentLetterIndex) + 1
+          this.state.currentGridState[currentWordCoords[nextLetterIndex][1]][currentWordCoords[nextLetterIndex][0]].focusRef.focus()
+        }
+      }
+    } else if (dir==="BACKWARD") {
+      if (currentLetterIndex !== 0) { // Only move to previous letter if not the first letter
+        console.log(value, pos)
+        const nextLetterIndex = parseInt(currentLetterIndex) - 1
+        console.log(nextLetterIndex)
+        this.state.currentGridState[currentWordCoords[nextLetterIndex][1]][currentWordCoords[nextLetterIndex][0]].focusRef.focus()
+      }
     }
   }
 
@@ -106,14 +140,15 @@ export default class Game extends React.Component {
       console.log("ERROR: Incomplete Word")
       return;
     }
-    ////////// Add dictionary check ("Word is not in dictionary")
+    ////////// TO DO: Add dictionary check ("Word is not in dictionary")
     let newGridState = this.state.currentGridState.slice() // Copy array
     this.getWordCoords(this.state.selectedWordID).forEach(e => {
       if (this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e[1]][e[0]]) {
         // Correct spot - Green tile
         newGridState[e[1]][e[0]].squareColour = "#6AAA64"
       } else if (this.getWordCoords(this.state.selectedWordID).some(e2 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e2[1]][e2[0]])) {
-        // In the word but wrong spot - Yellow tile
+        // In one or both of the words but wrong spot - Yellow tile 
+        /////////////// TO DO: Add the case where it checks both words
         newGridState[e[1]][e[0]].squareColour = "#C9B458"
       } else {
         // Not in word - Gray tile
@@ -131,7 +166,13 @@ export default class Game extends React.Component {
     <div className="App">
       <h1>Crossword(le)</h1>
       <h2>Number of words: {this.state.gameData.length}</h2>
-      <GameGrid currentGridState={this.state.currentGridState} handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}></GameGrid>
+      <GameGrid 
+        currentGridState={this.state.currentGridState} 
+        handleRef={(value, pos) => this.handleRef(value, pos)} 
+        handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}
+        moveLetterFocus={(dir, value, pos) => this.moveLetterFocus(dir, value, pos)}
+      >
+      </GameGrid>
       {this.state.selectedWordID!==undefined ? 
         <div>
           <h3>

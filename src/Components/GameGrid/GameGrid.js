@@ -18,7 +18,13 @@ export default class GameGrid extends React.Component {
             <div>
                 {Array(gridHeight).fill(0).map((e, i) => {
                     return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
-                        return <LetterSegment currentLetterState={this.state.currentGridState[i][i2]} handleLetterChange={(value, pos) => this.props.handleLetterChange(value, pos)}></LetterSegment>
+                        return <LetterSegment
+                                    currentLetterState={this.state.currentGridState[i][i2]} 
+                                    handleRef={(value, pos) => this.props.handleRef(value, pos)}
+                                    handleLetterChange={(value, pos) => this.props.handleLetterChange(value, pos)}
+                                    moveLetterFocus={(dir, value, pos) => this.props.moveLetterFocus(dir, value, pos)}
+                                >
+                                </LetterSegment>
                     })}</GridRow>
                 })}
             </div>

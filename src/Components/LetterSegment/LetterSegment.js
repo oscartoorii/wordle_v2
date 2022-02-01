@@ -9,19 +9,24 @@ export default class LetterSegment extends React.Component {
         }
     }
 
-    
-
     render() {
         return (
         <LetterButton squareColour={this.state.currentLetterState.squareColour} selected={this.state.currentLetterState.selected}>
             {this.state.currentLetterState.startLetterID===0 ? "" : <IDButton>{this.state.currentLetterState.startLetterID}</IDButton>}
-            {this.state.currentLetterState.actualLetter==="." ? "" : 
+            {this.state.currentLetterState.disabled ? "" : 
             <LetterInput 
                 type="text" 
                 maxLength={1} 
+                ref={input => this.state.currentLetterState.focusRef===null ? this.props.handleRef(input, this.state.currentLetterState.letterPos) : ""}
                 value={this.state.currentLetterState.currentLetter}
                 color={this.state.currentLetterState.textColour}
-                onInput={event => this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)}
+                onInput={event => {
+                    this.props.handleLetterChange(event.target.value, this.state.currentLetterState.letterPos)
+                }}
+                onKeyDown={event => 
+                    ((event.key==="Backspace"||event.key==="Delete") && this.state.currentLetterState.currentLetter==="") ? 
+                    this.props.moveLetterFocus("BACKWARD", event.target.value ,this.state.currentLetterState.letterPos) : ""
+                }
             />}
         </LetterButton>
         )
