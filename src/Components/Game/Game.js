@@ -114,7 +114,9 @@ export default class Game extends React.Component {
         this.handleWordSelect(associatedWords[currentWordIndex+1])
       }
     } else {
-      this.handleWordSelect(associatedWords[0])
+      if (!associatedWords.includes(this.state.selectedWordID)) {
+        this.handleWordSelect(associatedWords[0])
+      }
       this.setState({
         currentClickedWordPos: letterPos,
       })
