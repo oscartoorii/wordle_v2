@@ -19,14 +19,18 @@ _(Developed purely for learning purposes)_
 - Square-based word selection
 - Alert pop-ups
 - How to play section
-- Individual word guess history
+- Individual word guess history & limited attempts
+- Game score
+- Reveal answer at end if all attempts used
+- Score sharing
 - Checking word validity based on dictionary
 - Automated crossword generation
+- Daily new crossword & timer
 - Statistics
 - UI Overhaul
 - Dark Theme & High Contrast Mode
 - Hard Mode
-- Animations (Letter reveal, invalid word)
+- Animations (Letter reveal, invalid word, complete game)
 
 ### Technology
 
