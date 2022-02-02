@@ -187,26 +187,28 @@ export default class Game extends React.Component {
   render() {
     return (
     <GameDiv>
-      <h1>Crossword(le)</h1>
-      <h2>Number of words: {this.state.gameData.length}</h2>
-      <GameGrid 
-        currentGridState={this.state.currentGridState} 
-        handleRef={(value, pos) => this.handleRef(value, pos)} 
-        handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}
-        handleWordCheck={i => this.handleWordCheck(i)}
-        moveLetterFocus={(dir, value, pos) => this.moveLetterFocus(dir, value, pos)}
-        toggleSelectedWord={(i, i2) => this.toggleSelectedWord(i, i2)}
-      >
-      </GameGrid>
-      {this.state.selectedWordID!==undefined ? 
-        <div>
-          <h3>
-            {"Selected Word: " + this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation}
-          </h3>
-          <WordCheck handleWordCheck={i => this.handleWordCheck(i)} ></WordCheck>
-        </div>
-        : ""}
-      <WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>
+      <GameInnerDiv>
+        <h1>Crossword(le)</h1>
+        <h2>Number of words: {this.state.gameData.length}</h2>
+        <GameGrid 
+          currentGridState={this.state.currentGridState} 
+          handleRef={(value, pos) => this.handleRef(value, pos)} 
+          handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}
+          handleWordCheck={i => this.handleWordCheck(i)}
+          moveLetterFocus={(dir, value, pos) => this.moveLetterFocus(dir, value, pos)}
+          toggleSelectedWord={(i, i2) => this.toggleSelectedWord(i, i2)}
+        >
+        </GameGrid>
+        {this.state.selectedWordID!==undefined ? 
+          <div>
+            <h3>
+              {"Selected Word: " + this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation}
+            </h3>
+            <WordCheck handleWordCheck={i => this.handleWordCheck(i)} ></WordCheck>
+          </div>
+          : ""}
+        <WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>
+      </GameInnerDiv>
     </GameDiv>
     )
   }
@@ -242,13 +244,23 @@ const getAssociatedWords = (gameData) => {
   return layout;
 }
 
+const GameInnerDiv = styled.div`
+  display: inline-block;
+  margin: 0 auto;
+  padding: 10px;
+  min-width: 372px;
+  border-width: 2px;
+  border-style: solid;
+  border-image: 
+    linear-gradient(
+      to bottom, 
+      grey, 
+      rgba(0, 0, 0, 0)
+    ) 1 100%;
+`
+
 const GameDiv = styled.div`
-  justify-content:center; // centers in the flex direction and the default flex-direction is row
-  align-items:center; // centers perpendicular to the flex direction
-  height: 100vh; // 100% view height
-  width: 60vw; // 100% view width
-  min-width: 60vw;
-  position: absolute; // so it goes behind the current content
-  left: 20vw;
-  background-color: #EEEEEE;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 `
