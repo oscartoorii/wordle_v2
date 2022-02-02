@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
 import WordList from '../WordList/WordList';
-import { game1 } from '../../gameLayouts'
+import Header from '../Header/Header';
+import { game2 } from '../../gameLayouts'
 import WordCheck from '../WordCheck.js/WordCheck';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 
-const selectedGameData = game1
+const selectedGameData = game2
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ export default class Game extends React.Component {
   }
 
   componentDidMount() {
-    document.title = "Wordle v2" // Webpage title
+    document.title = "CrossWordle" // Webpage title
   }
 
   // Initialise current grid state based off game data
@@ -48,6 +49,21 @@ export default class Game extends React.Component {
       e2.squareColour = this.getLetter(i2, i)!=="." ? "#FFFFFF" : "#333333"
       e2.associatedWords = associatedWords[i][i2]
     }))
+  }
+
+  // Display help pop up
+  displayHelp() {
+    console.log("Help!")
+  }
+
+  // Display statistics pop up
+  displayStatistics() {
+    console.log("Showing Statistics")
+  }
+
+  // Display settings pop up
+  displaySettings() {
+    console.log("Showing Settings")
   }
 
   // Method to get the letter ID for rendering the word startPos
@@ -188,8 +204,8 @@ export default class Game extends React.Component {
     return (
     <GameDiv>
       <GameInnerDiv>
-        <h1>Crossword(le)</h1>
-        <h2>Number of words: {this.state.gameData.length}</h2>
+        <Header displayHelp={() => this.displayHelp()} displayStatistics={() => this.displayStatistics()} displaySettings={() => this.displaySettings()}/>
+        <NoWordsText>Number of words: {this.state.gameData.length}</NoWordsText>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
           handleRef={(value, pos) => this.handleRef(value, pos)} 
@@ -263,4 +279,10 @@ const GameDiv = styled.div`
   width: 100%;
   height: 100%;
   text-align: center;
+`
+
+const NoWordsText = styled.div`
+  user-select: none;
+  padding: 10px;
+  font-size: 20px;
 `

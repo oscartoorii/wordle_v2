@@ -43,7 +43,7 @@ const LetterButton = styled.button`
     background: ${props => props.squareColour};
     border: 3px solid ${props => props.selected ? "#477FD3" : "#999999"};
     float: left;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: bold;
     line-height: 34px;
     height: 56px;
@@ -60,7 +60,7 @@ const IDButton = styled.div`
     color: #333333;
     top: -11px;
     left: -2px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px;
 `;
 
@@ -68,7 +68,7 @@ const LetterInput = styled.input`
     color: ${props => props.color ? props.color : "black"};
     background: transparent;
     border: none;
-    font-size: 36px;
+    font-size: 30px;
     font-weight: bold;
     width: 36px;
     text-align: center;
