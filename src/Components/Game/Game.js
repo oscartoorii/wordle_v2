@@ -248,7 +248,7 @@ const GameInnerDiv = styled.div`
   display: inline-block;
   margin: 0 auto;
   padding: 10px;
-  min-width: 342px;
+  min-width: 336px;
   border-width: 2px;
   border-style: solid;
   border-image: 
