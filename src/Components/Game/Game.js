@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
 import WordList from '../WordList/WordList';
 import { game1 } from '../../gameLayouts'
@@ -185,7 +186,7 @@ export default class Game extends React.Component {
   
   render() {
     return (
-    <div className="App">
+    <GameDiv>
       <h1>Crossword(le)</h1>
       <h2>Number of words: {this.state.gameData.length}</h2>
       <GameGrid 
@@ -206,7 +207,7 @@ export default class Game extends React.Component {
         </div>
         : ""}
       <WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>
-    </div>
+    </GameDiv>
     )
   }
 }
@@ -240,3 +241,14 @@ const getAssociatedWords = (gameData) => {
   }))
   return layout;
 }
+
+const GameDiv = styled.div`
+  justify-content:center; // centers in the flex direction and the default flex-direction is row
+  align-items:center; // centers perpendicular to the flex direction
+  height: 100vh; // 100% view height
+  width: 60vw; // 100% view width
+  min-width: 60vw;
+  position: absolute; // so it goes behind the current content
+  left: 20vw;
+  background-color: #EEEEEE;
+`

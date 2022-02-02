@@ -46,12 +46,12 @@ const LetterButton = styled.button`
     font-size: 36px;
     font-weight: bold;
     line-height: 34px;
-    height: 69px;
+    height: 62px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 69px;
+    width: 62px;
     position: relative;
 `;
 
