@@ -8,7 +8,9 @@ export default class HelpExampleGrid extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          
+          gridData: props.gridData,
+          color: props.color,
+          colorPos: props.colorPos,
         }
     }
 
@@ -17,9 +19,11 @@ export default class HelpExampleGrid extends React.Component {
           <div>
             {Array(gridHeight).fill(0).map((e, i) => {
                 return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
-                    return <LetterButton squareColour="#FFFFFF">
-                      <LetterInput color="black">
-                      </LetterInput>
+                    return <LetterButton 
+                        squareColour={i===this.state.colorPos[1] && i2===this.state.colorPos[0] ? this.state.color : (this.state.gridData[i][i2]==="" ? "#333333" : "#FFFFFF")} 
+                        color={i===this.state.colorPos[1] && i2===this.state.colorPos[0] ? "white" : "black"}
+                        >
+                      {this.state.gridData[i][i2]}
                     </LetterButton>
                 })}</GridRow>
             })}
@@ -38,7 +42,8 @@ const GridRow = styled.div`
 
 const LetterButton = styled.button`
     background: ${props => props.squareColour};
-    border: 3px solid #999999
+    color: ${props => props.color};
+    border: 3px solid #999999;
     float: left;
     font-size: 30px;
     font-weight: bold;
@@ -50,18 +55,6 @@ const LetterButton = styled.button`
     text-align: center;
     width: 56px;
     position: relative;
+    pointer-events:none;
+    user-select: none;
 `;
-
-const LetterInput = styled.input`
-    color: ${props => props.color ? props.color : "black"};
-    background: transparent;
-    border: none;
-    font-size: 30px;
-    font-weight: bold;
-    width: 36px;
-    text-align: center;
-    text-transform: uppercase;
-    &:focus {
-        outline: none;
-    }
-`

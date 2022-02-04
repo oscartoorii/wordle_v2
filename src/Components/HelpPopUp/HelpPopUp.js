@@ -30,14 +30,14 @@ export default class HelpPopUp extends React.Component {
               <hr/>
               <b>Examples</b><br/>
               <br/>
-              <HelpExampleGrid/><br/>
-              The letter <b>X</b> is in the correct spot for both words.<br/>
+              <HelpExampleGrid gridData={[["B","O","A","R","D"], ["","R","","",""]]} color={"#6AAA64"} colorPos={[1, 0]} /><br/>
+              The letter <b>O</b> is in the correct spot for both words.<br/>
               <br/>
-              2x6 Yellow word here<br/>
-              The letter <b>Y</b> is in one or both of the words, but in the wrong spot.<br/>
+              <HelpExampleGrid gridData={[["I","","","",""], ["C","A","C","T","S"]]} color={"#C9B458"} colorPos={[0, 1]} /><br/>
+              The letter <b>C</b> is in one or both of the words, but in the wrong spot.<br/>
               <br/>
-              2x6 Gray word here<br/>
-              The letter <b>Z</b> is not in either of the words.<br/>
+              <HelpExampleGrid gridData={[["S","O","U","X","D"], ["","","","O",""]]} color={"#787C7E"} colorPos={[3, 0]} /><br/>
+              The letter <b>X</b> is not in either of the words.<br/>
               <hr/>
               <b>A new CROSSWORDLE will be available each day!</b>
             </HelpTextDiv>
