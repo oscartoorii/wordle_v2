@@ -233,10 +233,10 @@ export default class Game extends React.Component {
             <h3>
               {"Selected Word: " + this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation}
             </h3>
-            <WordCheck handleWordCheck={i => this.handleWordCheck(i)} ></WordCheck>
+            {/*<WordCheck handleWordCheck={i => this.handleWordCheck(i)} ></WordCheck>*/}
           </div>
           : ""}
-        <WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>
+        {/*<WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>*/}
       </GameInnerDiv>
     </GameDiv>
     )
