@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
 import Header from '../Header/Header';
-import { game2 } from '../../gameLayouts'
+import { game1 } from '../../gameLayouts'
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 import InfoPopUp from '../InfoPopUp/InfoPopUp';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 
-const selectedGameData = game2
+const selectedGameData = game1
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -210,9 +210,8 @@ export default class Game extends React.Component {
       if (this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e[1]][e[0]]) {
         // Correct spot - Green tile
         newGridState[e[1]][e[0]].squareColour = "#6AAA64"
-      } else if (this.getWordCoords(this.state.selectedWordID).some(e2 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e2[1]][e2[0]])) {
+      } else if (this.state.currentGridState[e[1]][e[0]].associatedWords.some(e2 => this.getWordCoords(e2).some(e3 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e3[1]][e3[0]]))) {
         // In one or both of the words but wrong spot - Yellow tile 
-        /////////////// TO DO: Add the case where it checks both words
         newGridState[e[1]][e[0]].squareColour = "#C9B458"
       } else {
         // Not in word - Gray tile
