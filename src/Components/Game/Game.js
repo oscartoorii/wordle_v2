@@ -5,6 +5,7 @@ import WordList from '../WordList/WordList';
 import Header from '../Header/Header';
 import { game2 } from '../../gameLayouts'
 import WordCheck from '../WordCheck.js/WordCheck';
+import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 
 const selectedGameData = game2
@@ -31,12 +32,16 @@ export default class Game extends React.Component {
       })),
       selectedWordID: undefined,
       currentClickedWordPos: undefined,
+      showingHelp: false,
+      showingStatistics: false,
+      showingSettings: false,
     }
     this.initCurrentGridState()
   }
 
   componentDidMount() {
     document.title = "CrossWordle" // Webpage title
+    document.description = "Wordle X Crossword"
   }
 
   // Initialise current grid state based off game data
@@ -52,18 +57,24 @@ export default class Game extends React.Component {
   }
 
   // Display help pop up
-  displayHelp() {
-    console.log("Help!")
+  setDisplayHelp(val) {
+    this.setState({
+      showingHelp: val,
+    })
   }
 
   // Display statistics pop up
-  displayStatistics() {
-    console.log("Showing Statistics")
+  setDisplayStatistics(val) {
+    this.setState({
+      showingStatistics: val,
+    })
   }
 
   // Display settings pop up
-  displaySettings() {
-    console.log("Showing Settings")
+  setDisplaySettings(val) {
+    this.setState({
+      showingSettings: val,
+    })
   }
 
   // Method to get the letter ID for rendering the word startPos
@@ -203,8 +214,10 @@ export default class Game extends React.Component {
   render() {
     return (
     <GameDiv>
-      <GameInnerDiv>
-        <Header displayHelp={() => this.displayHelp()} displayStatistics={() => this.displayStatistics()} displaySettings={() => this.displaySettings()}/>
+      {this.state.showingHelp ? <PopUpBackground/> : ""}
+      <GameInnerDiv>  
+        {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
+        <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
         <NoWordsText>Number of words: {this.state.gameData.length}</NoWordsText>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
@@ -285,4 +298,13 @@ const NoWordsText = styled.div`
   user-select: none;
   padding: 10px;
   font-size: 20px;
+`
+
+const PopUpBackground = styled.div`
+  position: absolute;
+  background-color: #000000;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  opacity: 0.4;
 `

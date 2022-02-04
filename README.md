@@ -16,10 +16,11 @@ _(Developed purely for learning purposes)_
 - Auto word focus
 - Smart Square-based word selection
 - Easy word checking
+- Mobile phone support
+- How to play section
 
 ### Future Features
 - Alert pop-ups
-- How to play section
 - Individual word guess history & limited attempts
 - Game score
 - Reveal answer at end if all attempts used
