@@ -45,15 +45,15 @@ const LetterButton = styled.button`
     color: ${props => props.color};
     border: 3px solid #999999;
     float: left;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
     line-height: 34px;
-    height: 56px;
+    height: 42px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 56px;
+    width: 42px;
     position: relative;
     pointer-events:none;
     user-select: none;
