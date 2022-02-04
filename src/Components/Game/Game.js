@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
-import WordList from '../WordList/WordList';
 import Header from '../Header/Header';
 import { game2 } from '../../gameLayouts'
-import WordCheck from '../WordCheck.js/WordCheck';
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
+import InfoPopUp from '../InfoPopUp/InfoPopUp';
+//import WordList from '../WordList/WordList';
+//import WordCheck from '../WordCheck.js/WordCheck';
 
 const selectedGameData = game2
 
@@ -35,6 +36,7 @@ export default class Game extends React.Component {
       showingHelp: false,
       showingStatistics: false,
       showingSettings: false,
+      infoPopUpText: "",
     }
     this.initCurrentGridState()
   }
@@ -75,6 +77,18 @@ export default class Game extends React.Component {
     this.setState({
       showingSettings: val,
     })
+  }
+
+  // Display info pop up with text
+  displayInfoPopUp(infoText) {
+    if (this.state.infoPopUpText==="") {
+      this.setState({
+        infoPopUpText: infoText,
+      })
+      setTimeout(() => this.setState({
+        infoPopUpText: "",
+      }), 4000)
+    }
   }
 
   // Method to get the letter ID for rendering the word startPos
@@ -187,10 +201,10 @@ export default class Game extends React.Component {
   // Checks the currently selected word
   handleWordCheck() {
     if (this.getWordCoords(this.state.selectedWordID).some(e => this.state.currentGridState[e[1]][e[0]].currentLetter==="")) {
-      console.log("ERROR: Incomplete Word")
+      this.displayInfoPopUp("Not enough letters")
       return;
     }
-    ////////// TO DO: Add dictionary check ("Word is not in dictionary")
+    ////////// TO DO: Add dictionary check ("Not in word list")
     let newGridState = this.state.currentGridState.slice() // Copy array
     this.getWordCoords(this.state.selectedWordID).forEach(e => {
       if (this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e[1]][e[0]]) {
@@ -219,6 +233,7 @@ export default class Game extends React.Component {
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
         <NoWordsText>Number of words: {this.state.gameData.length}</NoWordsText>
+        <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
           handleRef={(value, pos) => this.handleRef(value, pos)} 
@@ -305,6 +320,10 @@ const PopUpBackground = styled.div`
   background-color: #000000;
   height: 100%;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   opacity: 0.4;
+`
+
+const InfoPopUpDiv = styled.div`
+  height: 50px;
 `

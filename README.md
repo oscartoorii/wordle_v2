@@ -18,9 +18,9 @@ _(Developed purely for learning purposes)_
 - Easy word checking
 - Mobile phone support
 - How to play section
+- Alert pop-ups
 
 ### Future Features
-- Alert pop-ups
 - Individual word guess history & limited attempts
 - Game score
 - Reveal answer at end if all attempts used

@@ -56,7 +56,7 @@ const PopUp = styled.div`
   background-color: #FFFFFF;
   position: absolute;
   top: 69px;
-  z-index: 2;
+  z-index: 3;
 `
 
 const PopUpTitleDiv = styled.div`
