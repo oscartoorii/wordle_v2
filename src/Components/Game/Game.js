@@ -222,6 +222,12 @@ export default class Game extends React.Component {
     this.setState({
         currentGridState: newGridState
     })
+    // Check win condition
+    this.checkWin();
+  }
+
+  checkWin() {
+    console.log("Check win here")
   }
   
   render() {
