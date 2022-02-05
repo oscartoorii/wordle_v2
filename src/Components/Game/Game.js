@@ -6,6 +6,7 @@ import { game1 } from '../../gameLayouts'
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 import InfoPopUp from '../InfoPopUp/InfoPopUp';
+import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 
@@ -17,6 +18,12 @@ export default class Game extends React.Component {
     this.state = {
       gameData: selectedGameData,
       gameLayout: generateLayout(selectedGameData),
+      wordHistory: selectedGameData.map(e => {
+        return ({
+          completed: false,
+          data: [],
+        })
+      }),
       currentGridState: Array(gridHeight).fill(0).map((e, i) => Array(gridWidth).fill(0).map((e2, i2) => {
         return ({
           letterPos: [i2, i],
@@ -206,6 +213,7 @@ export default class Game extends React.Component {
     }
     ////////// TO DO: Add dictionary check ("Not in word list")
     let newGridState = this.state.currentGridState.slice() // Copy array
+    let newWordHistoryData = [];
     this.getWordCoords(this.state.selectedWordID).forEach(e => {
       if (this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e[1]][e[0]]) {
         // Correct spot - Green tile
@@ -218,12 +226,30 @@ export default class Game extends React.Component {
         newGridState[e[1]][e[0]].squareColour = "#787C7E"
       }
       newGridState[e[1]][e[0]].textColour = "#FFFFFF"
+      newWordHistoryData.push({
+        letter: newGridState[e[1]][e[0]].currentLetter,
+        colour: newGridState[e[1]][e[0]].squareColour,
+      })
     })
     this.setState({
         currentGridState: newGridState
     })
+    // Add to word history
+    this.addWordHistory(this.state.selectedWordID, newWordHistoryData)
     // Check win condition
     this.checkWin();
+  }
+
+  addWordHistory(wordID, newWordHistoryData) {
+    let newWordHistory = this.state.wordHistory.slice() // Copy array
+    console.log(newWordHistory)
+    if (newWordHistory.every(e => e.data.every(e2 => e2.colour==="#6AAA64"))) { // Implies word has been guessed correctly
+      newWordHistory[wordID].completed = true;
+    }
+    newWordHistory[wordID].data.push(newWordHistoryData); 
+    this.setState({
+        wordHistory: newWordHistory
+    })
   }
 
   checkWin() {
@@ -237,7 +263,6 @@ export default class Game extends React.Component {
       <GameInnerDiv>  
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
-        <NoWordsText>Number of words: {this.state.gameData.length}</NoWordsText>
         <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
@@ -248,15 +273,10 @@ export default class Game extends React.Component {
           toggleSelectedWord={(i, i2) => this.toggleSelectedWord(i, i2)}
         >
         </GameGrid>
-        {this.state.selectedWordID!==undefined ? 
-          <div>
-            <h3>
-              {"Selected Word: " + this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation}
-            </h3>
-            {/*<WordCheck handleWordCheck={i => this.handleWordCheck(i)} ></WordCheck>*/}
-          </div>
-          : ""}
-        {/*<WordList gameData={this.state.gameData} handleWordSelect={i => this.handleWordSelect(i)}></WordList>*/}
+        <SelectedWordText>
+          {"Selected Word: " + (this.state.selectedWordID===undefined ? "None" : this.state.gameData[this.state.selectedWordID].ID+" "+this.state.gameData[this.state.selectedWordID].orientation)}
+        </SelectedWordText>
+        <WordHistoryList wordHistory={this.state.wordHistory}/>
       </GameInnerDiv>
     </GameDiv>
     )
@@ -314,10 +334,10 @@ const GameDiv = styled.div`
   text-align: center;
 `
 
-const NoWordsText = styled.div`
+const SelectedWordText = styled.div`
   user-select: none;
   padding: 10px;
-  font-size: 20px;
+  font-size: 18px;
 `
 
 const PopUpBackground = styled.div`

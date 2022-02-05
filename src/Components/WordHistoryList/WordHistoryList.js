@@ -1,12 +1,11 @@
 import React from 'react'
-import WordSelect from '../WordSelect/WordSelect'
 import styled from 'styled-components'
 
-export default class WordList extends React.Component {
+export default class WordHistoryList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            gameData: props.gameData,
+            wordHistory: props.wordHistory,
         }
     }
 
@@ -14,10 +13,12 @@ export default class WordList extends React.Component {
         return (
             <ListWrapper>
                 <ul>
-                    {this.state.gameData.map((e,i) => {
-                        return (
-                            <WordSelect keyID={i} wordData={e} handleWordSelect={(i) => this.props.handleWordSelect(i)}></WordSelect>
-                        )
+                    {this.state.wordHistory.map((e,i) => {
+                        if (e.data.length===0) {
+                            return <h4>No attempts have been made</h4>
+                        } else {
+                            return <h4>{e.completed}</h4>
+                        }
                     })}
                 </ul>
             </ListWrapper>
