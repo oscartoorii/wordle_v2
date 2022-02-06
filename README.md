@@ -19,9 +19,9 @@ _(Developed purely for learning purposes)_
 - Mobile phone support
 - How to play section
 - Alert pop-ups
+- Individual word guess history & limited attempts
 
 ### Future Features
-- Individual word guess history & limited attempts
 - Game score
 - Reveal answer at end if all attempts used
 - Score sharing
