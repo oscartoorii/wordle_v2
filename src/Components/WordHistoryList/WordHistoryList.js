@@ -34,6 +34,7 @@ export default class WordHistoryList extends React.Component {
                             wordID={i}
                         />
                     }
+                    return true;
                 }
                 )}
             </ListWrapper>
