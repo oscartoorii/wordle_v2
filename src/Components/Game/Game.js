@@ -163,6 +163,15 @@ export default class Game extends React.Component {
     })
   }
 
+  clearSelectedWord() {
+    let newGridState = this.state.currentGridState.slice() // Copy array
+    newGridState.forEach((e, i) => e.forEach((e2, i2) => e2.selected = false))
+    this.setState({
+      selectedWordID: undefined,
+      currentGridState: newGridState,
+    })
+  }
+
   // Toggles the currently selected word based on the words associated with a clicked letter segment
   toggleSelectedWord(letterPos, associatedWords) {
     // Cycle through associated words if same letter is clicked multiple times
@@ -286,6 +295,7 @@ export default class Game extends React.Component {
         showingStatistics: true,
         gameScore: 0,
       }), 2000)
+      this.clearSelectedWord();
     }
   }
 
@@ -301,6 +311,7 @@ export default class Game extends React.Component {
         showingStatistics: true,
         gameScore: this.calculateScore(),
       }), 2000)
+      this.clearSelectedWord();
     }
   }
 
