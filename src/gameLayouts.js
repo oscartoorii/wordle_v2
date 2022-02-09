@@ -81,3 +81,18 @@ export const game2 = [
 // .IDIOM
 // .N...A
 // HEAR.L
+
+export const game3 = [
+    {
+        startPos: [1, 2],
+        word: "TEST",
+        orientation: "HORIZONTAL",
+        ID: 1
+    },
+]
+// ......
+// ......
+// .TEST.
+// ......
+// ......
+// ......

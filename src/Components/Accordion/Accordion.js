@@ -27,8 +27,8 @@ export default class Accordion extends React.Component {
 }
 
 const AccordionDiv = styled.div`
-    min-width: 330px;
-    max-width: 330px;
+    min-width: 280px;
+    max-width: 280px;
     user-select: none;
     margin-bottom: 5px;
 `

@@ -46,7 +46,7 @@ export default class WordHistoryList extends React.Component {
 
 const ListWrapper = styled.div`
     display: inline-block;
-    max-width: 330px;
+    max-width: 280px;
 `
 
 const NoAttemptsDiv = styled.div`
