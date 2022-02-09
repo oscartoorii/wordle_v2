@@ -2,15 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
 import Header from '../Header/Header';
-import { game1 } from '../../gameLayouts'
+import { game2 } from '../../gameLayouts'
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
+import StatisticsPopUp from '../StatisticsPopUp/StatisticsPopUp';
+import SettingsPopUp from '../SettingsPopUp/SettingsPopUp';
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 import InfoPopUp from '../InfoPopUp/InfoPopUp';
 import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 
-const selectedGameData = game1
+const selectedGameData = game2
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -46,6 +48,8 @@ export default class Game extends React.Component {
       showingStatistics: false,
       showingSettings: false,
       infoPopUpText: "",
+      gameComplete: false,
+      gameScore: -1,
     }
     this.initCurrentGridState()
   }
@@ -191,7 +195,7 @@ export default class Game extends React.Component {
         // Move to next letter in word
         this.moveLetterFocus("FORWARD", value, pos)
     }
-  }
+  } 
 
   // Moves the letter forward or backward
   moveLetterFocus(dir, value, pos) {
@@ -272,16 +276,31 @@ export default class Game extends React.Component {
 
   checkLoss() {
     if (!this.state.wordHistory[this.state.selectedWordID].completed && this.state.wordHistory[this.state.selectedWordID].data.length >= 6) {
+      this.setState({
+        gameComplete: true,
+      })
+      const currentWordCoords = this.getWordCoords(this.state.selectedWordID)
+      currentWordCoords.forEach(e => this.state.currentGridState[e[1]][e[0]].focusRef.blur())
       this.displayInfoPopUp("GAME OVER")
-      // Show end game with statistics, score (0) & completed crossword, disable (or cover) game grid
+      setTimeout(() => this.setState({
+        showingStatistics: true,
+        gameScore: 0,
+      }), 2000)
     }
   }
 
   checkWin() {
     if (this.state.wordHistory.every(e => e.completed)) {
-      this.displayInfoPopUp("Score: " + this.calculateScore())
-      // Display info pop up with a custom congratulatory word depending on the score
-      // Show end game with statistics, score & completed crossword, disable (or cover) game grid
+      this.setState({
+        gameComplete: true,
+      })
+      const currentWordCoords = this.getWordCoords(this.state.selectedWordID)
+      currentWordCoords.forEach(e => this.state.currentGridState[e[1]][e[0]].focusRef.blur())
+      this.displayInfoPopUp(this.scoreWord(this.calculateScore()))
+      setTimeout(() => this.setState({
+        showingStatistics: true,
+        gameScore: this.calculateScore(),
+      }), 2000)
     }
   }
 
@@ -291,17 +310,33 @@ export default class Game extends React.Component {
     const score = Math.round(-(99/((6*this.state.gameData.length-this.state.gameData.length)))*(noAttempts-this.state.gameData.length) + 100);
     return score;
   }
+
+  scoreWord(score) {
+    const winWords = [ 
+      "Genius",
+      "Magnificent",
+      "Impressive",
+      "Splendid",
+      "Great",
+      "Phew",
+    ]
+    // Assigned word is chosen in intervals of 16.5 (99/6), score 1-16.5 is "Phew", score 17-33 is "Great", etc
+    return winWords[score===1 ? 5 : Math.floor(6 - (score-1)/16.5)]
+  }
   
   render() {
     return (
     <GameDiv>
-      {this.state.showingHelp ? <PopUpBackground/> : ""}
+      {this.state.showingHelp || this.state.showingStatistics || this.state.showingSettings ? <PopUpBackground/> : ""}
       <GameInnerDiv>  
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
+        {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)}/> : ""}
+        {this.state.showingSettings ? <SettingsPopUp setDisplaySettings={(val) => this.setDisplaySettings(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
         <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
+          gameComplete={this.state.gameComplete}
           handleRef={(value, pos) => this.handleRef(value, pos)} 
           handleLetterChange={(value, pos) => this.handleLetterChange(value, pos)}
           handleWordCheck={i => this.handleWordCheck(i)}

@@ -6,17 +6,20 @@ export default class LetterSegment extends React.Component {
         super(props)
         this.state = {
             currentLetterState: props.currentLetterState,
+            gameComplete: props.gameComplete,
         }
     }
 
     render() {
         return (
-        <LetterButton squareColour={this.state.currentLetterState.squareColour} selected={this.state.currentLetterState.selected}>
+        <LetterButton tabIndex={-1} squareColour={this.state.currentLetterState.squareColour} selected={this.state.currentLetterState.selected}>
             {this.state.currentLetterState.startLetterID===0 ? "" : <IDButton>{this.state.currentLetterState.startLetterID}</IDButton>}
             {this.state.currentLetterState.disabled ? "" : 
             <LetterInput 
                 type="text" 
                 maxLength={1} 
+                tabIndex={-1}
+                gameComplete={this.props.gameComplete}
                 ref={input => this.state.currentLetterState.focusRef===null ? this.props.handleRef(input, this.state.currentLetterState.letterPos) : ""}
                 value={this.state.currentLetterState.currentLetter}
                 color={this.state.currentLetterState.textColour}
@@ -30,7 +33,20 @@ export default class LetterSegment extends React.Component {
                         this.props.handleWordCheck()
                     } else if (this.state.currentLetterState.currentLetter!=="" && !(event.key==="Backspace"||event.key==="Delete")) {
                         this.props.moveLetterFocus("FORWARD", event.target.value ,this.state.currentLetterState.letterPos)
-                    }
+                    } 
+                    // ADD KEYBOARD USABILITY - Currently doesn't work - maybe check for orientation for checking up/down or
+                    //else if (event.key==="ArrowLeft") {
+                    //    this.props.moveLetterFocus("BACKWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    //} else if (event.key==="ArrowRight") {
+                    //    this.props.moveLetterFocus("FORWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    //} else if (event.key==="ArrowUp") {
+                    //    this.props.moveLetterFocus("BACKWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    //} else if (event.key==="ArrowDown") {
+                    //    this.props.moveLetterFocus("FORWARD", event.target.value ,this.state.currentLetterState.letterPos)
+                    //} else if (event.code==="Space") { // Space bar
+                    //    // FIX - only works when focused letter is blank
+                    //    this.props.toggleSelectedWord(this.state.currentLetterState.letterPos, this.state.currentLetterState.associatedWords)
+                    //}
                 }}
                 onClick={() => this.props.toggleSelectedWord(this.state.currentLetterState.letterPos, this.state.currentLetterState.associatedWords)}
             />}
@@ -73,6 +89,8 @@ const LetterInput = styled.input`
     width: 36px;
     text-align: center;
     text-transform: uppercase;
+    user-select: ${props => props.gameComplete ? "none" : "auto"};
+    pointer-events: ${props => props.gameComplete ? "none" : "auto"};
     &:focus {
         outline: none;
     }

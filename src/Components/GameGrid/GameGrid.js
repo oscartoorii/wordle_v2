@@ -10,6 +10,7 @@ export default class GameGrid extends React.Component {
         super(props)
         this.state = {
             currentGridState: props.currentGridState,
+            gameComplete: props.gameComplete,
         }
     }
 
@@ -20,6 +21,7 @@ export default class GameGrid extends React.Component {
                     return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
                         return <LetterSegment
                                     currentLetterState={this.state.currentGridState[i][i2]} 
+                                    gameComplete={this.props.gameComplete}
                                     handleRef={(value, pos) => this.props.handleRef(value, pos)}
                                     handleLetterChange={(value, pos) => this.props.handleLetterChange(value, pos)}
                                     handleWordCheck={i => this.props.handleWordCheck(i)}
