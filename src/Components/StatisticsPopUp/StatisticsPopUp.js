@@ -94,23 +94,34 @@ const ScoreDiv = styled.div`
   width: 50%;
   padding: 6px 0px 6px 0px;
   font-weight: bold;
-  font-size: 18px;
-  height: 32px;
+  font-size: 20px;
+  height: 42px;
 `
 
 const ShareButtonDiv = styled.div`
   float: left;
   width: 50%;
-  padding: 6px 0px 6px 0px;
-  height: 32px;
+  padding: 2px 0px 6px 0px;
+  height: 42px;
 `
 
 const ShareButton = styled.button`
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  border-radius: 4px;
+  border: 0px;
+  width: 130px;
+  padding: 6px;
+  cursor: pointer;
   background-color: #6AAA64;
+  &:hover {
+    background-color: #79B374;
+  }
 `
 
 const NextGameTimerDiv = styled.div`
   font-weight: bold;
   font-size: 18px;
-  padding: 5px
+  padding: 5px;
 `

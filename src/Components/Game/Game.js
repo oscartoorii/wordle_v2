@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import GameGrid from '../GameGrid/GameGrid';
 import Header from '../Header/Header';
-import { game2 } from '../../gameLayouts'
+import * as gameLayouts from '../../gameLayouts';
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import StatisticsPopUp from '../StatisticsPopUp/StatisticsPopUp';
 import SettingsPopUp from '../SettingsPopUp/SettingsPopUp';
@@ -12,7 +12,8 @@ import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 
-const selectedGameData = game2
+const dev = 1;
+const selectedGameData = dev ? gameLayouts.game3 : gameLayouts.game2
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -100,7 +101,7 @@ export default class Game extends React.Component {
       })
       setTimeout(() => this.setState({
         infoPopUpText: "",
-      }), 4000)
+      }), 2500)
     }
   }
 
@@ -257,10 +258,7 @@ export default class Game extends React.Component {
     // Add to word history
     if (!this.state.wordHistory[this.state.selectedWordID].completed) { // Don't add to word history if word has been completed
       await this.addWordHistory(this.state.selectedWordID, newWordHistoryData)
-      // Check loss condition
-      this.checkLoss();
-      // Check win condition
-      this.checkWin();
+      this.checkGameEnd()
     }
   }
 
@@ -283,36 +281,35 @@ export default class Game extends React.Component {
     })
   }
 
-  checkLoss() {
-    if (!this.state.wordHistory[this.state.selectedWordID].completed && this.state.wordHistory[this.state.selectedWordID].data.length >= 6) {
-      this.setState({
-        gameComplete: true,
-      })
-      const currentWordCoords = this.getWordCoords(this.state.selectedWordID)
-      currentWordCoords.forEach(e => this.state.currentGridState[e[1]][e[0]].focusRef.blur())
-      this.displayInfoPopUp("GAME OVER")
-      setTimeout(() => this.setState({
-        showingStatistics: true,
-        gameScore: 0,
-      }), 2000)
-      this.clearSelectedWord();
-    }
+  openAllAccordions() {
+    let newWordHistory = this.state.wordHistory.slice() // Copy array
+    newWordHistory.map(e => e.active = e.data.length!==0)
+    this.setState({
+      wordHistory: newWordHistory,
+    })
   }
 
-  checkWin() {
-    if (this.state.wordHistory.every(e => e.completed)) {
+  // Checks whether either game has been won or lost, and takes appropriate action
+  checkGameEnd() {
+    const won = this.state.wordHistory.every(e => e.completed);
+    const lost = !this.state.wordHistory[this.state.selectedWordID].completed && this.state.wordHistory[this.state.selectedWordID].data.length >= 6;
+    if (won || lost) {
       this.setState({
         gameComplete: true,
+        gameScore: won ? this.calculateScore() : 0,
       })
       const currentWordCoords = this.getWordCoords(this.state.selectedWordID)
       currentWordCoords.forEach(e => this.state.currentGridState[e[1]][e[0]].focusRef.blur())
-      this.displayInfoPopUp(this.scoreWord(this.calculateScore()))
-      setTimeout(() => this.setState({
-        showingStatistics: true,
-        gameScore: this.calculateScore(),
-      }), 2000)
+      this.displayInfoPopUp(won ? this.scoreWord(this.calculateScore()) : "GAME OVER")
       this.clearSelectedWord();
-    }
+      window.scrollTo(0, 0)
+      setTimeout(() => {
+        this.openAllAccordions();
+        this.setState({
+          showingStatistics: true,
+        })
+      }, 2000)
+    } 
   }
 
   calculateScore() {
