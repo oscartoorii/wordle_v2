@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import moment from 'moment'
 import CompletedGameGrid from '../CompletedGameGrid/CompletedGameGrid'
 
 export default class StatisticsPopUp extends React.Component {
@@ -9,9 +10,28 @@ export default class StatisticsPopUp extends React.Component {
           gameComplete: props.gameComplete,
           currentGridState: props.currentGridState,
           score: props.score,
+          time: this.timeTilMidnight(),
         }
     }
 
+    componentDidMount() {
+      setInterval(() => {
+        this.setState({
+          time: this.timeTilMidnight(),
+        })
+      }, 1000); // Slight inaccuracies in time occur but not a big deal
+    }
+
+    timeTilMidnight() {
+      const now = moment().format("HH:mm:ss");
+      const midnight = "00:00:00";
+      return moment.utc(moment(midnight,"HH:mm:ss").diff(moment(now,"HH:mm:ss"))).format("HH:mm:ss")
+    }
+
+    getShareText() {
+      return `CrossWordle #1\n\nScore: ${this.state.score}`
+    }
+    
     render() {
         return (
           <PopUp>
@@ -33,9 +53,14 @@ export default class StatisticsPopUp extends React.Component {
                   Score: {this.state.score}
                 </ScoreDiv>
                 <ShareButtonDiv>
-                  <ShareButton>
-                    SHARE
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                  <ShareButton onClick={() => {
+                    navigator.clipboard.writeText(this.getShareText())
+                    this.props.displayInfoPopUp("Copied results to clipboard")
+                  }}>
+                    <ShareTextDiv>
+                      SHARE
+                    </ShareTextDiv>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 20" width="24">
                       <path fill="white" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path>
                     </svg>
                   </ShareButton>
@@ -46,7 +71,7 @@ export default class StatisticsPopUp extends React.Component {
                 <hr/>
                 <NextGameTimerDiv>
                 NEXT CROSSWORDLE<br/>
-                06:34:25
+                <NextGameTimerTimeDiv>{this.state.time}</NextGameTimerTimeDiv>
                 </NextGameTimerDiv>
               </EndgameDiv>
             }
@@ -64,7 +89,7 @@ const PopUp = styled.div`
   border-radius: 16px;
   background-color: #FFFFFF;
   position: absolute;
-  top: 69px;
+  top: 110px;
   z-index: 3;
 `
 
@@ -115,13 +140,24 @@ const ShareButton = styled.button`
   padding: 6px;
   cursor: pointer;
   background-color: #6AAA64;
+  display: flex;
   &:hover {
     background-color: #79B374;
   }
+`
+
+const ShareTextDiv = styled.div`
+  padding: 4px;
+  margin-left: 10px;
 `
 
 const NextGameTimerDiv = styled.div`
   font-weight: bold;
   font-size: 18px;
   padding: 5px;
+`
+
+const NextGameTimerTimeDiv = styled.div`
+  font-size: 26px;
+  font-weight: normal;
 `

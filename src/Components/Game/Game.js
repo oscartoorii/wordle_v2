@@ -241,6 +241,9 @@ export default class Game extends React.Component {
         newGridState[e[1]][e[0]].squareColour = "#6AAA64"
       } else if (this.state.currentGridState[e[1]][e[0]].associatedWords.some(e2 => this.getWordCoords(e2).some(e3 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e3[1]][e3[0]]))) {
         // In one or both of the words but wrong spot - Yellow tile 
+        // BUG - Letters in the word but wrong spot can appear any number of times and not restricted by the number of times it appears in the actual word.
+        // Eg. "HELLO" contains 1 "E", but typing in "EERIE" will show the 1st and 3rd "E" as yellow, despite there only being 1 E in the word.
+        // Ideally it should show the 2nd "E" as green and others as grey. If the word happened to be "HELEO", a guess "EERIE" would show 2nd "E" as green, 1st as yellow, and 3rd as grey.
         newGridState[e[1]][e[0]].squareColour = "#C9B458"
       } else {
         // Not in word - Gray tile
@@ -308,7 +311,7 @@ export default class Game extends React.Component {
         this.setState({
           showingStatistics: true,
         })
-      }, 2000)
+      }, 2500)
     } 
   }
 
@@ -338,7 +341,7 @@ export default class Game extends React.Component {
       {this.state.showingHelp || this.state.showingStatistics || this.state.showingSettings ? <PopUpBackground/> : ""}
       <GameInnerDiv>  
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
-        {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)}/> : ""}
+        {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} displayInfoPopUp={(text) => this.displayInfoPopUp(text)}/> : ""}
         {this.state.showingSettings ? <SettingsPopUp setDisplaySettings={(val) => this.setDisplaySettings(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
         <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>
@@ -424,8 +427,8 @@ const PopUpBackground = styled.div`
   background-color: #000000;
   height: 100%;
   width: 100%;
-  z-index: 2;
-  opacity: 0.4;
+  z-index: 1;
+  opacity: 0.3;
 `
 
 const InfoPopUpDiv = styled.div`

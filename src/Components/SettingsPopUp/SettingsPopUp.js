@@ -35,7 +35,7 @@ const PopUp = styled.div`
   border-radius: 16px;
   background-color: #FFFFFF;
   position: absolute;
-  top: 69px;
+  top: 110px;
   z-index: 3;
 `
 
