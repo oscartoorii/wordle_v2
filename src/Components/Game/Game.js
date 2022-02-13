@@ -12,7 +12,7 @@ import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 
-const dev = 1;
+const dev = 0;
 const selectedGameData = dev ? gameLayouts.game3 : gameLayouts.game2
 
 export default class Game extends React.Component {
