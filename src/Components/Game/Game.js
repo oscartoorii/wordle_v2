@@ -165,11 +165,14 @@ export default class Game extends React.Component {
   }
 
   clearSelectedWord() {
+    let newWordHistory = this.state.wordHistory.slice() // Copy array
+    newWordHistory.map(e => e.active = false)
     let newGridState = this.state.currentGridState.slice() // Copy array
     newGridState.forEach((e, i) => e.forEach((e2, i2) => e2.selected = false))
     this.setState({
       selectedWordID: undefined,
       currentGridState: newGridState,
+      wordHistory: newWordHistory,
     })
   }
 
