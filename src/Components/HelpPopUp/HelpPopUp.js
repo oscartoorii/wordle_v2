@@ -34,7 +34,7 @@ export default class HelpPopUp extends React.Component {
               The letter <b>O</b> is in the correct spot for both words.<br/>
               <br/>
               <HelpExampleGrid gridData={[["I","","","",""], ["C","A","C","T","S"]]} color={"#C9B458"} colorPos={[0, 1]} /><br/>
-              The letter <b>C</b> is in one or both of the words, but in the wrong spot.<br/>
+              The letter <b>C</b> is in one or both of the words but in the wrong spot, regardless of whether it has been guessed already.<br/>
               <br/>
               <HelpExampleGrid gridData={[["S","O","U","X","D"], ["","","","O",""]]} color={"#787C7E"} colorPos={[3, 0]} /><br/>
               The letter <b>X</b> is not in either of the words.<br/>

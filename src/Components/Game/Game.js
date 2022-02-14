@@ -93,6 +93,14 @@ export default class Game extends React.Component {
     })
   }
 
+  setAllDisplays(val) {
+    this.setState({
+      showingHelp: val,
+      showingStatistics: val,
+      showingSettings: val,
+    })
+  }
+
   // Display info pop up with text
   displayInfoPopUp(infoText) {
     if (this.state.infoPopUpText==="") {
@@ -341,7 +349,7 @@ export default class Game extends React.Component {
   render() {
     return (
     <GameDiv>
-      {this.state.showingHelp || this.state.showingStatistics || this.state.showingSettings ? <PopUpBackground/> : ""}
+      {this.state.showingHelp || this.state.showingStatistics || this.state.showingSettings ? <PopUpBackground onClick={() => this.setAllDisplays(false)}/> : ""}
       <GameInnerDiv>  
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
         {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} displayInfoPopUp={(text) => this.displayInfoPopUp(text)}/> : ""}
