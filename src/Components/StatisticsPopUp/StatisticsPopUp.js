@@ -46,8 +46,11 @@ export default class StatisticsPopUp extends React.Component {
               </PopUpClose>
             </PopUpTitleDiv>
             <StatisticsDiv>
-              <h4>No statistics currently available.</h4>
+              No statistics currently available.
             </StatisticsDiv>
+            <CrosswordleNoDiv>
+              {`#${('000'+(this.props.crosswordleNo)).slice(-3)}`}
+            </CrosswordleNoDiv>
             {this.props.gameComplete && 
               <EndgameDiv>
                 <hr/>
@@ -70,9 +73,6 @@ export default class StatisticsPopUp extends React.Component {
                 <CompletedGridDiv>
                 <CompletedGameGrid currentGridState={this.props.currentGridState}/>
                 </CompletedGridDiv>
-                <CrosswordleNoDiv>
-                  {`#${('000'+(this.props.crosswordleNo)).slice(-3)}`}
-                </CrosswordleNoDiv>
                 <hr/>
                 <NextGameTimerDiv>
                 NEXT CROSSWORDLE<br/>
@@ -109,7 +109,9 @@ const PopUpClose = styled.div`
 `
 
 const StatisticsDiv = styled.div`
-
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px;
 `
 
 const EndgameDiv = styled.div`
