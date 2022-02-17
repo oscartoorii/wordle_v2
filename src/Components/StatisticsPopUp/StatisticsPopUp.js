@@ -72,7 +72,7 @@ export default class StatisticsPopUp extends React.Component {
                 <hr/>
                 <NextGameTimerDiv>
                 NEXT CROSSWORDLE<br/>
-                <NextGameTimerTimeDiv>{this.props.time}</NextGameTimerTimeDiv>
+                <NextGameTimerTimeDiv>{this.state.time}</NextGameTimerTimeDiv>
                 </NextGameTimerDiv>
               </EndgameDiv>
             }
