@@ -13,13 +13,14 @@ import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordCheck from '../WordCheck.js/WordCheck';
 //import * as gameLayouts from '../../gameLayouts';
 
-const dev = 0;
+const dev = 0; // Change this to environment variables
 let API_ENDPOINT = dev ? `http://localhost:5000` : `https://crosswordle-api.vercel.app/`
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      crosswordleNo: undefined,
       gameData: [],
       gameLayout: [],
       wordHistory: [],
@@ -51,10 +52,13 @@ export default class Game extends React.Component {
   componentDidMount() {
     document.title = "CrossWordle" // Webpage title
     document.description = "Wordle X Crossword" // Webpage description
-    axios.get(API_ENDPOINT)
+    axios.get(API_ENDPOINT) // Fetch crosswordle data from API
     .then(res => {
-      let selectedGameData = res.data;
+      const responseData = res.data;
+      const selectedGameNo = responseData.crosswordleNo;
+      const selectedGameData = responseData.data;
       this.setState({
+        crosswordleNo: selectedGameNo,
         gameData: selectedGameData,
         gameLayout: generateLayout(selectedGameData),
         wordHistory: selectedGameData.map(e => {
@@ -367,7 +371,7 @@ export default class Game extends React.Component {
       {this.state.showingHelp || this.state.showingStatistics || this.state.showingSettings ? <PopUpBackground onClick={() => this.setAllDisplays(false)}/> : ""}
       <GameInnerDiv>  
         {this.state.showingHelp ? <HelpPopUp setDisplayHelp={(val) => this.setDisplayHelp(val)}/> : ""}
-        {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} displayInfoPopUp={(text) => this.displayInfoPopUp(text)}/> : ""}
+        {this.state.showingStatistics ? <StatisticsPopUp crosswordleNo={this.state.crosswordleNo} gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} displayInfoPopUp={(text) => this.displayInfoPopUp(text)}/> : ""}
         {this.state.showingSettings ? <SettingsPopUp setDisplaySettings={(val) => this.setDisplaySettings(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
         <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>

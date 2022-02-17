@@ -5,6 +5,7 @@ import CompletedGameGrid from '../CompletedGameGrid/CompletedGameGrid'
 
 export default class StatisticsPopUp extends React.Component {
     // Props:
+    //  crosswordleNo
     //  gameComplete
     //  currentGridState
     //  score
@@ -30,7 +31,7 @@ export default class StatisticsPopUp extends React.Component {
     }
 
     getShareText() {
-      return `CrossWordle #1\n\nScore: ${this.props.score}`
+      return `CrossWordle #${('000'+this.props.crosswordleNo).slice(-3)}\n\nScore: ${this.props.score}`
     }
     
     render() {
@@ -69,6 +70,9 @@ export default class StatisticsPopUp extends React.Component {
                 <CompletedGridDiv>
                 <CompletedGameGrid currentGridState={this.props.currentGridState}/>
                 </CompletedGridDiv>
+                <CrosswordleNoDiv>
+                  {`#${('000'+(this.props.crosswordleNo)).slice(-3)}`}
+                </CrosswordleNoDiv>
                 <hr/>
                 <NextGameTimerDiv>
                 NEXT CROSSWORDLE<br/>
@@ -161,4 +165,9 @@ const NextGameTimerDiv = styled.div`
 const NextGameTimerTimeDiv = styled.div`
   font-size: 26px;
   font-weight: normal;
+`
+
+const CrosswordleNoDiv = styled.div`
+  color: #787C7E;
+  font-size: 14px;
 `
