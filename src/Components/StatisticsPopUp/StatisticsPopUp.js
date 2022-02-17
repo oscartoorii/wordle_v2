@@ -8,7 +8,12 @@ export default class StatisticsPopUp extends React.Component {
     //  gameComplete
     //  currentGridState
     //  score
-    //  time
+    constructor(props) {
+      super(props)
+      this.state = {
+        time: this.timeTilMidnight(),
+      }
+    }
 
     componentDidMount() {
       setInterval(() => {
