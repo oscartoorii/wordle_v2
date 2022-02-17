@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import CompletedGameGrid from '../CompletedGameGrid/CompletedGameGrid'
 
 export default class StatisticsPopUp extends React.Component {
@@ -24,7 +24,7 @@ export default class StatisticsPopUp extends React.Component {
     }
 
     timeTilMidnight() {
-      const now = moment().format("HH:mm:ss");
+      const now = moment.tz("Australia/Melbourne").format("HH:mm:ss");
       const midnight = "00:00:00";
       return moment.utc(moment(midnight,"HH:mm:ss").diff(moment(now,"HH:mm:ss"))).format("HH:mm:ss")
     }
