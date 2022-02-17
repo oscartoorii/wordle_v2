@@ -11,9 +11,12 @@ import InfoPopUp from '../InfoPopUp/InfoPopUp';
 import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
+import { generateCrossword } from '../../CrosswordGeneration/generateCrossword';
 
-const dev = 0;
-const selectedGameData = dev ? gameLayouts.game3 : gameLayouts.game2
+//const dev = 0;
+//const selectedGameData = dev ? gameLayouts.game3 : gameLayouts.game2
+const selectedGameData = generateCrossword()
+console.log(selectedGameData)
 
 export default class Game extends React.Component {
   constructor(props) {
@@ -255,6 +258,8 @@ export default class Game extends React.Component {
         // BUG - Letters in the word but wrong spot can appear any number of times and not restricted by the number of times it appears in the actual word.
         // Eg. "HELLO" contains 1 "E", but typing in "EERIE" will show the 1st and 3rd "E" as yellow, despite there only being 1 E in the word.
         // Ideally it should show the 2nd "E" as green and others as grey. If the word happened to be "HELEO", a guess "EERIE" would show 2nd "E" as green, 1st as yellow, and 3rd as grey.
+        // This bug will not be fixed for the foreseeable future as it seems to be unavoidable given the current game design. 
+        // For example, if you had a letter which overlapped 
         newGridState[e[1]][e[0]].squareColour = "#C9B458"
       } else {
         // Not in word - Gray tile
@@ -355,6 +360,7 @@ export default class Game extends React.Component {
         {this.state.showingStatistics ? <StatisticsPopUp gameComplete={this.state.gameComplete} currentGridState={this.state.currentGridState} score={this.state.gameScore} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} displayInfoPopUp={(text) => this.displayInfoPopUp(text)}/> : ""}
         {this.state.showingSettings ? <SettingsPopUp setDisplaySettings={(val) => this.setDisplaySettings(val)}/> : ""}
         <Header setDisplayHelp={(val) => this.setDisplayHelp(val)} setDisplayStatistics={(val) => this.setDisplayStatistics(val)} setDisplaySettings={(val) => this.setDisplaySettings(val)}/>
+        <GenerateCrosswordButton onClick={() => generateCrossword()}>GENERATE CROSSWORD</GenerateCrosswordButton>
         <InfoPopUpDiv>{this.state.infoPopUpText!=="" ? <InfoPopUp infoText={this.state.infoPopUpText}/> : ""}</InfoPopUpDiv>
         <GameGrid 
           currentGridState={this.state.currentGridState} 
@@ -444,4 +450,8 @@ const PopUpBackground = styled.div`
 
 const InfoPopUpDiv = styled.div`
   height: 50px;
+`
+
+const GenerateCrosswordButton = styled.button`
+
 `
