@@ -2,17 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default class InfoPopUp extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          infoText: props.infoText,
-        }
-    }
+    // Props:
+    //  infoText
 
     render() {
         return (
           <InfoPopUpDiv>
-            {this.state.infoText}
+            {this.props.infoText}
           </InfoPopUpDiv>
         )
     }

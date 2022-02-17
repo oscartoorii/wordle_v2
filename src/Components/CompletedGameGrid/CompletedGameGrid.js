@@ -3,21 +3,17 @@ import styled from 'styled-components'
 import { gridHeight, gridWidth } from '../GameGrid/GameGrid';
 
 export default class CompletedGridDiv extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          currentGridState: props.currentGridState,
-        }
-    }
+    // Props:
+    //  currentGridState
 
     render() {
         return (
           <GameGrid>
             {Array(gridHeight).fill(0).map((e, i) => {
                     return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
-                        return <LetterButton tabIndex={-1} squareColour={this.state.currentGridState[i][i2].disabled ? "#333333" : "#6AAA64"}>
-                          {this.state.currentGridState[i][i2].startLetterID===0 ? "" : <IDButton tabIndex={-1}>{this.state.currentGridState[i][i2].startLetterID}</IDButton>}
-                          {this.state.currentGridState[i][i2].disabled ? "" : this.state.currentGridState[i][i2].actualLetter}
+                        return <LetterButton tabIndex={-1} squareColour={this.props.currentGridState[i][i2].disabled ? "#333333" : "#6AAA64"}>
+                          {this.props.currentGridState[i][i2].startLetterID===0 ? "" : <IDButton tabIndex={-1}>{this.props.currentGridState[i][i2].startLetterID}</IDButton>}
+                          {this.props.currentGridState[i][i2].disabled ? "" : this.props.currentGridState[i][i2].actualLetter}
                       </LetterButton>
                     })}</GridRow>
                 })}

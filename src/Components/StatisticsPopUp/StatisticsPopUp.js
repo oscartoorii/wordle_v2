@@ -4,15 +4,11 @@ import moment from 'moment'
 import CompletedGameGrid from '../CompletedGameGrid/CompletedGameGrid'
 
 export default class StatisticsPopUp extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          gameComplete: props.gameComplete,
-          currentGridState: props.currentGridState,
-          score: props.score,
-          time: this.timeTilMidnight(),
-        }
-    }
+    // Props:
+    //  gameComplete
+    //  currentGridState
+    //  score
+    //  time
 
     componentDidMount() {
       setInterval(() => {
@@ -29,7 +25,7 @@ export default class StatisticsPopUp extends React.Component {
     }
 
     getShareText() {
-      return `CrossWordle #1\n\nScore: ${this.state.score}`
+      return `CrossWordle #1\n\nScore: ${this.props.score}`
     }
     
     render() {
@@ -46,11 +42,11 @@ export default class StatisticsPopUp extends React.Component {
             <StatisticsDiv>
               <h4>No statistics currently available.</h4>
             </StatisticsDiv>
-            {this.state.gameComplete && 
+            {this.props.gameComplete && 
               <EndgameDiv>
                 <hr/>
                 <ScoreDiv>
-                  Score: {this.state.score}
+                  Score: {this.props.score}
                 </ScoreDiv>
                 <ShareButtonDiv>
                   <ShareButton onClick={() => {
@@ -66,12 +62,12 @@ export default class StatisticsPopUp extends React.Component {
                   </ShareButton>
                 </ShareButtonDiv>
                 <CompletedGridDiv>
-                <CompletedGameGrid currentGridState={this.state.currentGridState}/>
+                <CompletedGameGrid currentGridState={this.props.currentGridState}/>
                 </CompletedGridDiv>
                 <hr/>
                 <NextGameTimerDiv>
                 NEXT CROSSWORDLE<br/>
-                <NextGameTimerTimeDiv>{this.state.time}</NextGameTimerTimeDiv>
+                <NextGameTimerTimeDiv>{this.props.time}</NextGameTimerTimeDiv>
                 </NextGameTimerDiv>
               </EndgameDiv>
             }

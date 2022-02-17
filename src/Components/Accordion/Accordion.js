@@ -2,16 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default class Accordion extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            wordID: props.wordID,
-            active: props.active,
-            title: props.title,
-            subtitle: props.subtitle,
-            content: props.content,
-        }
-    }
+    // Props:
+    //  wordID
+    //  active
+    //  title
+    //  subtitle
+    //  content
 
     render() {
         return (

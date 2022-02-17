@@ -3,12 +3,6 @@ import styled from 'styled-components'
 import HelpExampleGrid from '../HelpExampleGrid/HelpExampleGrid'
 
 export default class HelpPopUp extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          
-        }
-    }
 
     render() {
         return (

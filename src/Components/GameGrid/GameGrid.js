@@ -6,13 +6,9 @@ export const gridWidth = 6;
 export const gridHeight = 6;
 
 export default class GameGrid extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentGridState: props.currentGridState,
-            gameComplete: props.gameComplete,
-        }
-    }
+    // Props:
+    //  currentGridState
+    //  gameComplete
 
     render() {
         return (
@@ -20,7 +16,7 @@ export default class GameGrid extends React.Component {
                 {Array(gridHeight).fill(0).map((e, i) => {
                     return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
                         return <LetterSegment
-                                    currentLetterState={this.state.currentGridState[i][i2]} 
+                                    currentLetterState={this.props.currentGridState[i][i2]} 
                                     gameComplete={this.props.gameComplete}
                                     handleRef={(value, pos) => this.props.handleRef(value, pos)}
                                     handleLetterChange={(value, pos) => this.props.handleLetterChange(value, pos)}

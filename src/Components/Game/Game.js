@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import GameGrid from '../GameGrid/GameGrid';
 import Header from '../Header/Header';
-import * as gameLayouts from '../../gameLayouts';
 import HelpPopUp from '../HelpPopUp/HelpPopUp';
 import StatisticsPopUp from '../StatisticsPopUp/StatisticsPopUp';
 import SettingsPopUp from '../SettingsPopUp/SettingsPopUp';
@@ -11,24 +11,18 @@ import InfoPopUp from '../InfoPopUp/InfoPopUp';
 import WordHistoryList from '../WordHistoryList/WordHistoryList';
 //import WordList from '../WordList/WordList';
 //import WordCheck from '../WordCheck.js/WordCheck';
+//import * as gameLayouts from '../../gameLayouts';
 
 const dev = 0;
-const selectedGameData = dev ? gameLayouts.game3 : gameLayouts.game2
+let API_ENDPOINT = dev ? `http://localhost:5000` : `https://crosswordle-api.vercel.app/`
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      gameData: selectedGameData,
-      gameLayout: generateLayout(selectedGameData),
-      wordHistory: selectedGameData.map(e => {
-        return ({
-          title: e.ID + " " + e.orientation,
-          completed: false,
-          data: [],
-          active: false,
-        })
-      }),
+      gameData: [],
+      gameLayout: [],
+      wordHistory: [],
       currentGridState: Array(gridHeight).fill(0).map((e, i) => Array(gridWidth).fill(0).map((e2, i2) => {
         return ({
           letterPos: [i2, i],
@@ -52,24 +46,45 @@ export default class Game extends React.Component {
       gameComplete: false,
       gameScore: -1,
     }
-    this.initCurrentGridState()
   }
-
+ 
   componentDidMount() {
     document.title = "CrossWordle" // Webpage title
-    document.description = "Wordle X Crossword"
+    document.description = "Wordle X Crossword" // Webpage description
+    axios.get(API_ENDPOINT)
+    .then(res => {
+      let selectedGameData = res.data;
+      this.setState({
+        gameData: selectedGameData,
+        gameLayout: generateLayout(selectedGameData),
+        wordHistory: selectedGameData.map(e => {
+          return ({
+            title: e.ID + " " + e.orientation,
+            completed: false,
+            data: [],
+            active: false,
+          })
+        }),
+      })
+    }).then(() => {
+      this.initCurrentGridState()
+    })
   }
 
   // Initialise current grid state based off game data
   initCurrentGridState () {
     const associatedWords = getAssociatedWords(this.state.gameData)
-    this.state.currentGridState.forEach((e, i) => e.forEach((e2, i2) => {
+    let newGridState = this.state.currentGridState.slice() // Copy array
+    newGridState.forEach((e, i) => e.forEach((e2, i2) => {
       e2.actualLetter = this.getLetter(i2,i)
       e2.startLetterID = this.getStartLetterID(i2,i)
       e2.disabled = this.getLetter(i2, i)==="."
       e2.squareColour = this.getLetter(i2, i)!=="." ? "#FFFFFF" : "#333333"
       e2.associatedWords = associatedWords[i][i2]
     }))
+    this.setState({
+        currentGridState: newGridState
+    })
   }
 
   // Display help pop up

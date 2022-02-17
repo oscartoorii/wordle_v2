@@ -2,17 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default class WordHistoryRow extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          indvWordHistory: props.indvWordHistory,
-        }
-    }
+    // Props:
+    //  indvWordHistory
 
     render() {
         return (
           <div>
-            {<GridRow>{this.state.indvWordHistory.map((e, i) => {
+            {<GridRow>{this.props.indvWordHistory.map((e, i) => {
                     return <LetterButton 
                         squareColour={e.colour} 
                         color={"white"}

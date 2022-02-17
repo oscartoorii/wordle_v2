@@ -1,4 +1,4 @@
-# Crossword(le)
+# CrossWordle Webapp
 ### *Wordle, evolved.*
 
 Crossword(le) is a Wordle and Crossword hybrid game on the browser.
@@ -22,12 +22,13 @@ _(Developed purely for learning purposes)_
 - Individual word guess history & limited attempts
 - Game score
 - Reveal answer at end if all attempts used
-
-### Future Features
 - Score sharing
-- Checking word validity based on dictionary
 - Automated crossword generation
 - Daily new crossword & timer
+
+### Future Features
+
+- Checking word validity based on dictionary
 - Statistics
 - UI Overhaul
 - Dark Theme & High Contrast Mode

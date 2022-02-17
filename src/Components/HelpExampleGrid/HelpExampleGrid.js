@@ -5,14 +5,10 @@ const gridHeight = 2;
 const gridWidth = 5;
 
 export default class HelpExampleGrid extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-          gridData: props.gridData,
-          color: props.color,
-          colorPos: props.colorPos,
-        }
-    }
+    // Props: 
+    //  gridData
+    //  color
+    //  colorPos
 
     render() {
         return (
@@ -20,10 +16,10 @@ export default class HelpExampleGrid extends React.Component {
             {Array(gridHeight).fill(0).map((e, i) => {
                 return <GridRow>{Array(gridWidth).fill(0).map((e2, i2) => {
                     return <LetterButton 
-                        squareColour={i===this.state.colorPos[1] && i2===this.state.colorPos[0] ? this.state.color : (this.state.gridData[i][i2]==="" ? "#333333" : "#FFFFFF")} 
-                        color={i===this.state.colorPos[1] && i2===this.state.colorPos[0] ? "white" : "black"}
+                        squareColour={i===this.props.colorPos[1] && i2===this.props.colorPos[0] ? this.props.color : (this.props.gridData[i][i2]==="" ? "#333333" : "#FFFFFF")} 
+                        color={i===this.props.colorPos[1] && i2===this.props.colorPos[0] ? "white" : "black"}
                         >
-                      {this.state.gridData[i][i2]}
+                      {this.props.gridData[i][i2]}
                     </LetterButton>
                 })}</GridRow>
             })}
