@@ -13,7 +13,9 @@ export default class Accordion extends React.Component {
         return (
             <AccordionDiv>
                 <AccordionTitleDiv onClick={() => this.props.setAccordionActive(this.props.wordID, !this.props.active)}>
-                    <div>{this.props.title}<SubtitleDiv>{this.props.subtitle}</SubtitleDiv></div>
+                    <AccordionTitleTextDiv>
+                        <div>{this.props.title}<SubtitleDiv>{this.props.subtitle}</SubtitleDiv></div>
+                    </AccordionTitleTextDiv>
                     <div>{this.props.active ? '-' : '+'}</div>
                 </AccordionTitleDiv>
                 {this.props.active && <AccordionContentDiv>{this.props.content}</AccordionContentDiv>}
@@ -45,6 +47,12 @@ const AccordionTitleDiv = styled.div`
     &:hover {
         background-color: #F5F5F5;
     }
+`
+
+const AccordionTitleTextDiv = styled.div`
+    margin-left: -10px;
+    margin-top: -4px;
+    width: 136px;
 `
 
 const SubtitleDiv = styled.div`

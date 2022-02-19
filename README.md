@@ -28,11 +28,12 @@ _(Developed purely for learning purposes)_
 
 ### Future Features
 
-- Checking word validity based on dictionary
 - Statistics
-- UI Overhaul
+- Activity tracking
+- Checking word validity based on dictionary
 - Dark Theme & High Contrast Mode
 - Hard Mode
+- UI Overhaul
 - Animations (Letter reveal, invalid word, complete game)
 
 ### Technology

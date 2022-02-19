@@ -31,7 +31,7 @@ export default class StatisticsPopUp extends React.Component {
     }
 
     getShareText() {
-      return `CrossWordle #${('000'+this.props.crosswordleNo).slice(-3)}\n\nScore: ${this.props.score}`
+      return `CrossWordle #${('000'+this.props.crosswordleNo).slice(-3)} \n\nScore: ${this.props.score}`
     }
     
     render() {
@@ -49,7 +49,7 @@ export default class StatisticsPopUp extends React.Component {
               No statistics currently available.
             </StatisticsDiv>
             <CrosswordleNoDiv>
-              {`#${('000'+(this.props.crosswordleNo)).slice(-3)}`}
+              {this.props.crosswordleNo && `#${('000'+(this.props.crosswordleNo)).slice(-3)}`}
             </CrosswordleNoDiv>
             {this.props.gameComplete && 
               <EndgameDiv>
