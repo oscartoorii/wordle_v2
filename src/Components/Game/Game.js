@@ -270,11 +270,7 @@ export default class Game extends React.Component {
         // Correct spot - Green tile
         newGridState[e[1]][e[0]].squareColour = "#6AAA64"
       } else if (this.state.currentGridState[e[1]][e[0]].associatedWords.some(e2 => this.getWordCoords(e2).some(e3 => this.state.currentGridState[e[1]][e[0]].currentLetter===this.state.gameLayout[e3[1]][e3[0]]))) {
-        // In one or both of the words but wrong spot - Yellow tile 
-        // BUG - Letters in the word but wrong spot can appear any number of times and not restricted by the number of times it appears in the actual word.
-        // Eg. "HELLO" contains 1 "E", but typing in "EERIE" will show the 1st and 3rd "E" as yellow, despite there only being 1 E in the word.
-        // Ideally it should show the 2nd "E" as green and others as grey. If the word happened to be "HELEO", a guess "EERIE" would show 2nd "E" as green, 1st as yellow, and 3rd as grey.
-        // This should be resolved by checking each letter against the other word's latest attempt
+        // In one or both of the words but wrong spot - Yellow tile
         newGridState[e[1]][e[0]].squareColour = "#C9B458"
       } else {
         // Not in word - Gray tile

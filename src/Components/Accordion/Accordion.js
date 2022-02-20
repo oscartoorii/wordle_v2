@@ -51,7 +51,7 @@ const AccordionTitleDiv = styled.div`
 
 const AccordionTitleTextDiv = styled.div`
     margin-left: -10px;
-    margin-top: -4px;
+    margin-top: -2px;
     width: 136px;
 `
 
